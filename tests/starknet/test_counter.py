@@ -1,9 +1,7 @@
 import pytest
-
 from conftest import StarknetFactory, compile_contract
 from starkware.starknet.testing.state import StarknetState
-from starkware.starkware_utils.error_handling import StarkException
-from starkware.starknet.services.api.contract_definition import EntryPointType
+
 
 @pytest.fixture(scope="module")
 async def starknet_factory():
@@ -13,9 +11,7 @@ async def starknet_factory():
 
     def _f():
         starknet_ = starknet.copy()
-        return starknet_, [
-            counter
-        ]
+        return starknet_, [counter]
 
     return _f
 
@@ -26,6 +22,6 @@ async def test_increment_counter(starknet_factory: StarknetFactory):
 
     await starknet.invoke_raw(
         contract_address=counter,
-        selector='increment_counter',
+        selector="increment_counter",
         calldata=[],
     )
