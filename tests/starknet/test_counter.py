@@ -7,7 +7,7 @@ from starkware.starknet.testing.state import StarknetState
 async def starknet_factory():
     starknet = await StarknetState.empty()
     counter_def = compile_contract("counter.cairo")
-    counter = await starknet.deploy(counter_def)
+    counter = await starknet.deploy(counter_def, constructor_calldata=[0])
 
     def _f():
         starknet_ = starknet.copy()
@@ -23,5 +23,6 @@ async def test_increment_counter(starknet_factory: StarknetFactory):
     await starknet.invoke_raw(
         contract_address=counter,
         selector="increment_counter",
+        caller_address=1,
         calldata=[],
     )

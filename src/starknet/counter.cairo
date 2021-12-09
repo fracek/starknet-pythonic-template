@@ -5,11 +5,10 @@ from starkware.cairo.common.alloc import alloc
 from starkware.cairo.common.cairo_builtins import HashBuiltin
 from starkware.cairo.common.math import assert_nn, assert_not_zero
 from starkware.starknet.common.messages import send_message_to_l1
-from starkware.starknet.common.storage import Storage, storage_read, storage_write
 
 # # Constants
 
-const MESSAGE_UPDATE_COUNT = %[ 0 %]
+const MESSAGE_UPDATE_COUNT = 0
 
 # # Storage
 
@@ -25,15 +24,15 @@ end
 
 # # Public API
 
-@external
-func initialize{storage_ptr : Storage*, pedersen_ptr : HashBuiltin*, range_check_ptr}(
+@constructor
+func constructor{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}(
         l1_counter_address : felt):
     _l1_counter_address.write(l1_counter_address)
     return ()
 end
 
 @view
-func get_l1_counter_address{storage_ptr : Storage*, pedersen_ptr : HashBuiltin*, range_check_ptr}(
+func get_l1_counter_address{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}(
         ) -> (address : felt):
     let (address) = _l1_counter_address.read()
     return (address=address)
@@ -41,7 +40,7 @@ end
 
 @external
 func increment_counter{
-        syscall_ptr : felt*, storage_ptr : Storage*, pedersen_ptr : HashBuiltin*, range_check_ptr}(
+        syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}(
         ):
     alloc_locals
 
@@ -53,7 +52,7 @@ end
 
 @external
 func update_l1_counter{
-        syscall_ptr : felt*, storage_ptr : Storage*, pedersen_ptr : HashBuiltin*, range_check_ptr}(
+        syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check_ptr}(
         ):
     alloc_locals
 
